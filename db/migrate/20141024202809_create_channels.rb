@@ -7,7 +7,7 @@ class CreateChannels < ActiveRecord::Migration
       t.integer :subscriber_count
       t.boolean :hidden_subscriber_count
       t.integer :video_count
-      t.string :channel_id, :unique => true
+      t.string :channel_id
       t.string :channel_etag
       t.string :category_id
     end
