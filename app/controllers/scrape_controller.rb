@@ -2,9 +2,8 @@ class ScrapeController < ApplicationController
 
   def index
     # creating client instance
-    # require 'google/api_client'
-
-
+    require 'google/api_client'
+    
     client = Google::APIClient.new
 
     # authenticating
@@ -24,15 +23,21 @@ class ScrapeController < ApplicationController
 
     result = client.execute(
       :api_method => client.discovered_api('youtube', 'v3').channels.list,
-      :parameters => { part: 'contentDetails', mine: 'true'}
+      :parameters => { part: 'statistics', categoryId: 'GCQ29tZWR5'}
     )
     if result.success?
         result.data
+        @view_result = JSON.parse result.response.body
     end
     
-    binding.pry
+    
 
   end
 
 
 end
+# get categoryId here with part=snippet, region=US
+# https://developers.google.com/youtube/v3/docs/guideCategories/list
+
+# go here to get list of channels given a category id (GCQ29tZWR5 - comedy) / part = statistics
+# https://developers.google.com/youtube/v3/docs/channels/list
