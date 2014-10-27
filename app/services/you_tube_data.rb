@@ -2,7 +2,7 @@ class YouTubeData
   
   require 'google/api_client'
 
-  # attr_accessor :results
+  attr_accessor :client
 
   #class variables
   #@client
@@ -31,11 +31,12 @@ class YouTubeData
 
     if result.success?
       # @results = JSON.parse result.response.body
-      @nextPageToken = result["nextPageToken"]
-      add_results_to_database(@results, categoryId)
-      10.times do
-        next_api_call(@client, categoryId)
-      end
+      # @nextPageToken = result["nextPageToken"]
+      # add_results_to_database(@results, categoryId)
+      # 10.times do
+      #   next_api_call(@client, categoryId)
+      # end
+      ap JSON.parse result.response.body
     end
   end
 
