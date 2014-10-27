@@ -44,3 +44,9 @@ gem 'pry-rails'
 gem 'awesome_print'
 
 gem 'google-api-client'
+
+#stealing from happy_seed
+gem "bootstrap-sass"
+gem "modernizr-rails"
+gem "jazz_hands", github: "nixme/jazz_hands", branch: "bring-your-own-debugger", groups: [:development, :test]
+gem "byebug", groups: [:development, :test]
