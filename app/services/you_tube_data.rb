@@ -2,7 +2,11 @@ class YouTubeData
   
   require 'google/api_client'
 
-  attr_accessor :client, :results
+  # attr_accessor :results
+
+  #class variables
+  #@client
+  #@results
 
   def initialize
     @client = Google::APIClient.new
@@ -26,28 +30,29 @@ class YouTubeData
     )
 
     if result.success?
-      @results = JSON.parse result.response.body
-      @nextPageToken = @results["nextPageToken"]
+      # @results = JSON.parse result.response.body
+      @nextPageToken = result["nextPageToken"]
       add_results_to_database(@results, categoryId)
-      while @nextPageToken
-        next_api_call(@client, categoryId, @nextPageToken)
-        binding.pry
+      10.times do
+        next_api_call(@client, categoryId)
       end
     end
   end
 
   private
-  def next_api_call(client, categoryId, nextPageToken)
+  def next_api_call(client, categoryId)
     result = client.execute(
       :api_method => client.discovered_api('youtube', 'v3').channels.list,
-      :parameters => { part: 'statistics', categoryId: categoryId, nextPageToken: nextPageToken}
+      :parameters => { part: 'statistics', categoryId: categoryId, nextPageToken: @nextPageToken}
     )
+    
     if result.success?
       @results = JSON.parse result.response.body
       binding.pry
       @nextPageToken = @results["nextPageToken"]
       add_results_to_database(@results, categoryId)
       puts @results
+
     end
   end
   
@@ -72,5 +77,8 @@ class YouTubeData
 
 # go here to get list of channels given a category id (GCQ29tZWR5 - comedy) / part = statistics
 # https://developers.google.com/youtube/v3/docs/channels/list
+ # result = client.execute(:api_method => client.discovered_api('youtube', 'v3').channels.list, :parameters => { part: 'statistics', categoryId: categoryId, nextPageToken: "CAUQAA"})
+
+
 
 end
